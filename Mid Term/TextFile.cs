@@ -8,12 +8,23 @@ namespace Mid_Term
 {
     class TextFile
     {
-        //READ AND PERFORM BELOW STEPS BEFORE EXECUTING ANY OF THE METHODS
+        //READ AND PERFORM BELOW STEPS BEFORE FIRST EXECUTING ANY OF THE METHODS
         //https://stackoverflow.com/questions/6416564/how-to-read-a-text-file-in-projects-root-directory
 
         /*Normally if we don't use the "GetSpecialFolder" method for a path, 
          * it automatically looks within our project bin folder, but that's not where our text file is. I believe the below will make a copy of 
          * the txt file when the code builds and put that copy in the bin folder. It worked for me. */
+
+        public static void WriteToTxt(string name, string category, string description, double price)
+        {
+            var textFile = @"productlist.txt";
+            List<string> theMenu = File.ReadAllLines(textFile).ToList();
+            string newItem = $"{name},{category},{description},{price}";
+            theMenu.Add(newItem);
+            File.WriteAllLines(textFile, theMenu);
+
+            OutputTxtFile(); //you can remove this if you want and use outside of the method if that's easier
+        }
 
         public static void OutputTxtFile() //USE THIS METHOD TO DISPLAY THE MENU
         {
