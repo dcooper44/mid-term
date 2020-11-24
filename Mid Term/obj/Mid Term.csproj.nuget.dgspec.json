@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\verke\\source\\midterm\\mid-term\\Mid Term\\Mid Term.csproj": {}
+    "C:\\Users\\goods\\source\\repos\\mid-term\\Mid Term\\Mid Term.csproj": {}
   },
   "projects": {
-    "C:\\Users\\verke\\source\\midterm\\mid-term\\Mid Term\\Mid Term.csproj": {
+    "C:\\Users\\goods\\source\\repos\\mid-term\\Mid Term\\Mid Term.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\verke\\source\\midterm\\mid-term\\Mid Term\\Mid Term.csproj",
+        "projectUniqueName": "C:\\Users\\goods\\source\\repos\\mid-term\\Mid Term\\Mid Term.csproj",
         "projectName": "Mid Term",
-        "projectPath": "C:\\Users\\verke\\source\\midterm\\mid-term\\Mid Term\\Mid Term.csproj",
-        "packagesPath": "C:\\Users\\verke\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\verke\\source\\midterm\\mid-term\\Mid Term\\obj\\",
+        "projectPath": "C:\\Users\\goods\\source\\repos\\mid-term\\Mid Term\\Mid Term.csproj",
+        "packagesPath": "C:\\Users\\goods\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\goods\\source\\repos\\mid-term\\Mid Term\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\verke\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\goods\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -52,7 +52,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.400\\RuntimeIdentifierGraph.json"
         }
       }
     }
