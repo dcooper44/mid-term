@@ -31,9 +31,12 @@ namespace Mid_Term
             var textFile = @"productlist.txt";
             List<Product> theMenu = ReadFromTxt(textFile);
 
+            int itemNumber = 0;
+
             foreach (var food in theMenu)
             {
-                Console.WriteLine($"{ food.name}, {food.category}, {food.description}, ${food.price}");
+                Console.WriteLine($"{itemNumber}: { food.name}, {food.category}, {food.description}, ${food.price}");
+                itemNumber += 1;
             }
         }
 

@@ -1,12 +1,12 @@
-apple,fruit,perpound,2.25
-milk,dairy,pergallon,2.99
-bread,bakery,perloaf,1.99
-cake,bakery,per10"cake,8.99
-icecream,frozendesserts,perpint,4.50
-broccoli,frozenvegetables,per12ozbag,1.80
-ribeyesteak,meats,perpound,11.25
-porkbellystrips,meats,per5lbs,24
-avocado,fruit,perpound,4.00
-butter,dairy,perpound,4.99
-granola,pantry,per12oz,4.99
-kale,vegetables,perpound,3.99
+apple,fruit,per pound,2.25
+milk,dairy,per gallon,2.99
+bread,bakery,per loaf,1.99
+cake,bakery,per 10"cake,8.99
+icecream,frozen desserts,per pint,4.50
+green beans,frozen vegetables,per 12oz bag,1.80
+ribeye steak,meats,perpound,11.25
+pork belly strips,meats,per 5lbs,24
+dragon fruit,fruit,per pound,4.00
+salted butter,dairy,per pound,4.99
+oatmeal,pantry,per 12oz,4.99
+kale,vegetables,per pound,3.99
