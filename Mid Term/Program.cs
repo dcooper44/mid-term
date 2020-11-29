@@ -8,7 +8,7 @@ namespace Mid_Term
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var newVariable = Console.ReadLine();
         }
     }
 }
