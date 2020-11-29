@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Mid_Term
 {
-    class Product
+   public class Product
     {
         public string name { get; set; }
 
