@@ -60,9 +60,78 @@ namespace Mid_Term
 
 
             } while (true);
-            
-                  
-                
+
+
+            //Call The Checkout Method
+            //Need To Bring grandTotal outside of current scope, we need to define this higher up.
+            // Due to how the loops are set up above, we will never break out of the loops and reach this code
+            // The Other Validation methods are built but Adryenne and I will have to work together on Monday to make them fit in the Method Above
+            CheckoutCartForUser(listOfFood, grandTotal);
+
+
+        }
+
+        public static void CheckoutCartForUser(Dictionary<Product, double> userCheckoutList, double grandTotal)
+        {
+            bool keepLooping = true;
+            bool isCashCorrect = false;
+            do
+            {
+                do
+                {
+                    Console.WriteLine("How Would You Like To Pay? (Enter a Number Below)\n 1) Cash \n 2) Credit \n 3) Check\n");
+                    var userInput = Console.ReadLine();
+
+                    if (userInput.Equals("cash", StringComparison.OrdinalIgnoreCase))
+                    {
+                        keepLooping = false;
+                        Console.WriteLine("Please Enter the Amount of Cash you will be paying with");
+                        var userCash = Console.ReadLine();
+                        isCashCorrect = ValidateCashEntered(userCash, grandTotal);
+
+                    }
+                    else if (userInput.Equals("credit", StringComparison.OrdinalIgnoreCase))
+                    {
+                        keepLooping = false;
+                        Console.WriteLine("Please Enter the Credit Card Number:");
+                        var userCardNumber = Console.ReadLine();
+                        Console.WriteLine("Please Enter the Expiration Date of your card");
+                        var userExpirationDate = Console.ReadLine();
+                        Console.WriteLine("Please Enter the CW of your credit card");
+                        var userCW = Console.ReadLine();
+
+
+                    }
+                    else if (userInput.Equals("check", StringComparison.OrdinalIgnoreCase))
+                    {
+                        keepLooping = false;
+                        Console.WriteLine("Please Enter the Check Number");
+                        var userCheckNumber = Console.ReadLine();
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("That is not a form of payment, please try again");
+                        keepLooping = true;
+
+                    }
+                } while (keepLooping);
+            } while (isCashCorrect);
+
+
+        }
+
+        public static bool ValidateCashEntered(string userCash, double grandTotal)
+        {
+            if (double.TryParse(userCash, out double userCashDouble) && (userCashDouble > grandTotal))
+            {
+                return false;
+            }
+            else
+            {
+                Console.WriteLine("This Does Not Work, Please Try Again");
+                return true;
+            }
         }
 
     }
