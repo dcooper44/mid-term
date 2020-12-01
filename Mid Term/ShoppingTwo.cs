@@ -45,23 +45,39 @@ class ShoppingTwo
 
 
         //Call The Checkout Method
-        CheckoutCartForUser(userCheckoutList, grandTotal);
+        var userPaymentType = CheckoutCartForUser(userCheckoutList, grandTotal);
 
 
         //Call The Receipt Method using the same input variables as the checkout method.
-        //(userCheckoutList, grandTotal)
+        GenerateReceiptForUser(userCheckoutList, grandTotal, userPaymentType);
+
     }
 
-    public static void CheckoutCartForUser(Dictionary<Product, double> userCheckoutList, double grandTotal)
+    public static void GenerateReceiptForUser(Dictionary<Product, double> userCheckoutList, double subTotal, string userPaymentType)
+    {
+        var taxRate = 0.06;
+        foreach (var keyValuePair in userCheckoutList)
+        {
+            Console.WriteLine($"{keyValuePair.Key}-----{keyValuePair.Value}");
+        }
+        var taxTotal = taxRate * subTotal;
+        var grandTotal = taxTotal + subTotal;
+        Console.WriteLine($"Your sub total is {subTotal}");
+        Console.WriteLine($" Your tax total is {taxTotal}");
+        Console.WriteLine($" Your grand total is {grandTotal}");
+    }
+
+    public static string CheckoutCartForUser(Dictionary<Product, double> userCheckoutList, double grandTotal)
     {
         bool keepLooping = true;
         bool isCashCorrect = false;
+        string userInput;
         do
         {
             do
             {
                 Console.WriteLine("How Would You Like To Pay? \n Cash \n Credit \n Check\n");
-                var userInput = Console.ReadLine();
+                userInput = Console.ReadLine();
 
                 if (userInput.Equals("cash", StringComparison.OrdinalIgnoreCase))
                 {
@@ -98,7 +114,7 @@ class ShoppingTwo
                 }
             } while (keepLooping);
         } while (isCashCorrect);
-
+        return userInput;
 
     }
 
