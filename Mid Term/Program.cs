@@ -8,7 +8,8 @@ namespace Mid_Term
     {
         static void Main(string[] args)
         {
-            var newVariable = Console.ReadLine();
+           
+            ShoppingTwo.GetItemFromUser(TextFile.ReadFromTxt(@"productlist.txt"));
         }
     }
 }
