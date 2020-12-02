@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Mid_Term
 {
-    class TextFile
+    public class TextFile
     {
         //READ AND PERFORM BELOW STEPS BEFORE FIRST EXECUTING ANY OF THE METHODS
         //https://stackoverflow.com/questions/6416564/how-to-read-a-text-file-in-projects-root-directory
@@ -36,6 +36,7 @@ namespace Mid_Term
             foreach (var food in theMenu)
             {
                 Console.WriteLine($"{itemNumber}: { food.name}, {food.category}, {food.description}, ${food.price}");
+                itemNumber += 1;
             }
         }
 
@@ -58,6 +59,7 @@ namespace Mid_Term
 
                 menuItems.Add(newItem);
             }
+
             return menuItems;
         }
     }
