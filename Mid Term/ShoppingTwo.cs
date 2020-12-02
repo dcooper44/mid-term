@@ -25,7 +25,7 @@ class ShoppingTwo
                 var userFoodSelection = char.Parse(Console.ReadLine());
 
 
-                Console.WriteLine($"Please type in the amount of {userFoodSelection} you wish to purchase");
+                Console.WriteLine($"Please type in how many you'd like");
                 var userAmountSelection = Console.ReadLine();
 
                 if (ValidateFoodInput(shoppingMenu, userFoodSelection, userAmountSelection) && ValidateQuantityInput(userAmountSelection))
@@ -61,7 +61,7 @@ class ShoppingTwo
         var taxRate = 0.06;
         foreach (var keyValuePair in userCheckoutList)
         {
-            Console.WriteLine($"{keyValuePair.Key}-----{keyValuePair.Value}");
+            Console.WriteLine($"{keyValuePair.Key.name}-----{keyValuePair.Value}");
         }
         var taxTotal = taxRate * subTotal;
         var grandTotal = taxTotal + subTotal;
@@ -226,7 +226,7 @@ class ShoppingTwo
         bool keepLooping;
         do
         {
-            Console.WriteLine("Would you like to Add More Items? (y/n");
+            Console.WriteLine("Would you like to Add More Items? (y/n)");
             var userInput = Console.ReadLine();
 
             if (userInput.Equals("y", StringComparison.OrdinalIgnoreCase) || userInput.Equals("yes", StringComparison.OrdinalIgnoreCase))
@@ -246,5 +246,73 @@ class ShoppingTwo
             }
         } while (keepLooping);
         return false;
+    }
+
+    public static void UpdateMenu()
+    {
+        bool keepGoing = true;
+        do
+        {
+            Console.WriteLine("Would you like to add an item to our menu (y/n)?");
+            string userChoice = Console.ReadLine();
+            Console.WriteLine();
+
+            if (userChoice.Equals("n", StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine("Goodbye!");
+                break;
+            }
+            else
+            {
+                Console.WriteLine("Please enter an item");
+                string name = Console.ReadLine();
+                Console.WriteLine();
+                Console.WriteLine("Please enter a category");
+                string category = Console.ReadLine();
+                Console.WriteLine();
+                Console.WriteLine("Please enter a description");
+                string description = Console.ReadLine();
+                Console.WriteLine();
+
+                string price;
+
+                do
+                {
+                    Console.WriteLine("Please enter a price");
+                     price = Console.ReadLine();
+
+                    bool checkDub = Double.TryParse(price, out double doublePrice);
+
+                    if (!checkDub)
+                    {
+                        Console.WriteLine("Not a valid entry. Try again.");
+                        continue;
+                    }
+                    else
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("NEW LIST: ");
+                        TextFile.WriteToTxt(name, category, description, doublePrice);
+                        Console.WriteLine();
+
+                        keepGoing = AskUserToContinueAddingProducts();
+                        break;
+                    }
+
+                } while (true);
+              
+            }
+        } while (keepGoing);
+    }
+
+    public static void ValidatePrice(string price)
+    {
+        bool checkPrice = Double.TryParse(price, out double doublePrice);
+
+        if (!checkPrice)
+        {
+
+        }
+                
     }
 }
