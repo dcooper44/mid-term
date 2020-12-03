@@ -300,7 +300,10 @@ class ShoppingTwo
         {            
             if (addItems)
             {
-                Console.WriteLine("Please enter an item");
+                Console.WriteLine();
+                TextFile.OutputTxtFile();
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("\nPlease enter an item");
                 string name = Console.ReadLine();
                 Console.WriteLine();
                 Console.WriteLine("Please enter a category");
@@ -329,6 +332,7 @@ class ShoppingTwo
                         Console.WriteLine();
                         Console.WriteLine("NEW LIST: ");
                         TextFile.WriteToTxt(name, category, description, doublePrice);
+                        Console.ForegroundColor = ConsoleColor.White;
                         Console.WriteLine();
 
                         keepGoing = AskUserToContinueAddingProducts();
