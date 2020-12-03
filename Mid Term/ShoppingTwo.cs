@@ -14,25 +14,38 @@ class ShoppingTwo
         bool invalidInput;
         bool continueAddingProducts;
         double grandTotal = 0;
-        Dictionary<Product, double> userCheckoutList = new Dictionary<Product, double>();
+        Dictionary<Product, double> userCheckoutList = new Dictionary<Product, double>(); //keep track of quantity instead of line total on this dictionary
         do
         {
             double lineTotal = 0;
             do
             {
+                Console.WriteLine();
                 TextFile.OutputTxtFile();
-                Console.WriteLine("Please select the product you wish to buy by typing in the position in which the product is in the list (1,2,3,4.. etc) or by typing in the first letter of the item name");
+                Console.WriteLine("\nPlease select the product you wish to buy by typing in the position in which the product is in the list (1,2,3,4.. etc) or by typing in the first letter of the item name");
                 var userFoodSelection = Console.ReadLine();
                 
                 
-                Console.WriteLine($"Please type in how many you'd like");
+                Console.WriteLine($"\nPlease type in how many you'd like");
                 var userAmountSelection = Console.ReadLine();
 
                 if (ValidateFoodInput(shoppingMenu, userFoodSelection) && ValidateQuantityInput(userAmountSelection))
                 {
-                    invalidInput = false;
-                    lineTotal = GetLineTotal(shoppingMenu, userFoodSelection, userAmountSelection);
-                    userCheckoutList.Add(GenerateUserPickAsProduct(shoppingMenu, userFoodSelection), lineTotal);
+                    try
+                    {
+                        invalidInput = false;
+                        lineTotal = GetLineTotal(shoppingMenu, userFoodSelection, userAmountSelection);
+                        userCheckoutList.Add(GenerateUserPickAsProduct(shoppingMenu, userFoodSelection), lineTotal);
+                    }
+                    catch (ArgumentException)
+                    {
+                        Console.WriteLine("You Have Aleady Wiped us out of this Item!");                        
+
+                        break;
+                        //Console.WriteLine("Please Select A Different Item");                        
+                        //invalidInput = false;
+                    }
+                    
                 }
                 else
                 {
@@ -44,7 +57,7 @@ class ShoppingTwo
                
             } while (invalidInput);
 
-            grandTotal = grandTotal + lineTotal;
+            grandTotal = Math.Round(grandTotal + lineTotal, 2);
 
             continueAddingProducts = AskUserToContinueAddingProducts();
         } while (continueAddingProducts);
@@ -55,22 +68,32 @@ class ShoppingTwo
 
 
         //Call The Receipt Method using the same input variables as the checkout method.
-        GenerateReceiptForUser(userCheckoutList, grandTotal, userPaymentType);
+        GenerateReceiptForUser(userCheckoutList, grandTotal);
 
     }
 
-    public static void GenerateReceiptForUser(Dictionary<Product, double> userCheckoutList, double subTotal, string userPaymentType)
+    public static double GenerateLineTotal(Product food, int itemQuantity)
+    {
+        double lineTotal;
+
+        lineTotal = food.price * itemQuantity;
+
+        return lineTotal;
+
+    }
+
+    public static void GenerateReceiptForUser(Dictionary<Product, double> userCheckoutList, double subTotal)
     {
         var taxRate = 0.06;
         foreach (var keyValuePair in userCheckoutList)
         {
-            Console.WriteLine($"{keyValuePair.Key.name}-----{keyValuePair.Value}");
+            Console.WriteLine($"{keyValuePair.Key.name}-----${keyValuePair.Value}");
         }
-        var taxTotal = taxRate * subTotal;
-        var grandTotal = taxTotal + subTotal;
-        Console.WriteLine($"Your sub total is {subTotal}");
-        Console.WriteLine($" Your tax total is {taxTotal}");
-        Console.WriteLine($" Your grand total is {grandTotal}");
+        var taxTotal = Math.Round(taxRate * subTotal, 2);
+        var grandTotal = Math.Round(taxTotal + subTotal, 2);
+        Console.WriteLine($"\nYour sub total is ${subTotal}");
+        Console.WriteLine($"Your tax total is ${taxTotal}");
+        Console.WriteLine($"Your grand total is ${grandTotal}");        
     }
 
     public static string CheckoutCartForUser(Dictionary<Product, double> userCheckoutList, double grandTotal)
@@ -82,13 +105,13 @@ class ShoppingTwo
         {
             do
             {
-                Console.WriteLine("How Would You Like To Pay? \n Cash \n Credit \n Check\n");
+                Console.WriteLine("\nHow Would You Like To Pay? \n Cash \n Credit \n Check\n");
                 userInput = Console.ReadLine();
 
                 if (userInput.Equals("cash", StringComparison.OrdinalIgnoreCase))
                 {
                     keepLooping = false;
-                    Console.WriteLine("Please Enter the Amount of Cash you will be paying with");
+                    Console.WriteLine("\nPlease Enter the Amount of Cash you will be paying with");
                     var userCash = Console.ReadLine();
                     isCashCorrect = ValidateCashEntered(userCash, grandTotal);
 
@@ -96,11 +119,11 @@ class ShoppingTwo
                 else if (userInput.Equals("credit", StringComparison.OrdinalIgnoreCase))
                 {
                     keepLooping = false;
-                    Console.WriteLine("Please Enter the Credit Card Number:");
+                    Console.WriteLine("\nPlease Enter the Credit Card Number:");
                     var userCardNumber = Console.ReadLine();
-                    Console.WriteLine("Please Enter the Expiration Date of your card");
+                    Console.WriteLine("\nPlease Enter the Expiration Date of your card");
                     var userExpirationDate = Console.ReadLine();
-                    Console.WriteLine("Please Enter the CW of your credit card");
+                    Console.WriteLine("\nPlease Enter the CW of your credit card");
                     var userCW = Console.ReadLine();
 
 
@@ -108,13 +131,13 @@ class ShoppingTwo
                 else if (userInput.Equals("check", StringComparison.OrdinalIgnoreCase))
                 {
                     keepLooping = false;
-                    Console.WriteLine("Please Enter the Check Number");
+                    Console.WriteLine("\nPlease Enter the Check Number");
                     var userCheckNumber = Console.ReadLine();
 
                 }
                 else
                 {
-                    Console.WriteLine("That is not a form of payment, please try again");
+                    Console.WriteLine("\nThat is not a form of payment, please try again");
                     keepLooping = true;
 
                 }
@@ -132,7 +155,7 @@ class ShoppingTwo
         }
         else
         {
-            Console.WriteLine("This Does Not Work, Please Try Again");
+            Console.WriteLine("\nThis Does Not Work, Please Try Again");
             return true;
         }
     }
@@ -237,7 +260,7 @@ class ShoppingTwo
         bool keepLooping;
         do
         {
-            Console.WriteLine("Would you like to Add More Items? (y/n)");
+            Console.WriteLine("\nWould you like to Add More Items? (y/n)");
             var userInput = Console.ReadLine();
 
             if (userInput.Equals("y", StringComparison.OrdinalIgnoreCase) || userInput.Equals("yes", StringComparison.OrdinalIgnoreCase))
@@ -308,8 +331,7 @@ class ShoppingTwo
             }            
             else
             {
-                Console.WriteLine("Goodbye!"); ;
-                break;
+               break;
             }
         } while (keepGoing);
         Console.WriteLine("Thank you, goodbye");
@@ -327,7 +349,6 @@ class ShoppingTwo
 
             if (userChoice.Equals("n", StringComparison.OrdinalIgnoreCase))
             {
-                Console.WriteLine("Goodbye!");
                 return false;
             }
             else if (userChoice.Equals("y", StringComparison.OrdinalIgnoreCase))
