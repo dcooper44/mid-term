@@ -35,6 +35,7 @@ namespace Mid_Term
 
             foreach (var food in theMenu)
             {
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"{itemNumber}: { food.name}, {food.category}, {food.description}, ${food.price}");
                 itemNumber += 1;
             }
