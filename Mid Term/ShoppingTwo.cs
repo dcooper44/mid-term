@@ -22,13 +22,13 @@ class ShoppingTwo
             {
                 TextFile.OutputTxtFile();
                 Console.WriteLine("Please select the product you wish to buy by typing in the position in which the product is in the list (1,2,3,4.. etc) or by typing in the first letter of the item name");
-                var userFoodSelection = char.Parse(Console.ReadLine());
-
-
+                var userFoodSelection = Console.ReadLine();
+                
+                
                 Console.WriteLine($"Please type in how many you'd like");
                 var userAmountSelection = Console.ReadLine();
 
-                if (ValidateFoodInput(shoppingMenu, userFoodSelection, userAmountSelection) && ValidateQuantityInput(userAmountSelection))
+                if (ValidateFoodInput(shoppingMenu, userFoodSelection) && ValidateQuantityInput(userAmountSelection))
                 {
                     invalidInput = false;
                     lineTotal = GetLineTotal(shoppingMenu, userFoodSelection, userAmountSelection);
@@ -39,6 +39,9 @@ class ShoppingTwo
                     Console.WriteLine("Please Try Again");
                     invalidInput = true;
                 }
+               
+                
+               
             } while (invalidInput);
 
             grandTotal = grandTotal + lineTotal;
@@ -134,7 +137,7 @@ class ShoppingTwo
         }
     }
 
-    public static Product GenerateUserPickAsProduct(List<Product> shoppingMenu, char userFoodSelection)
+    public static Product GenerateUserPickAsProduct(List<Product> shoppingMenu, string userFoodSelection)
     {
         if (int.TryParse(userFoodSelection.ToString(), out int intFoodSelection))
         {
@@ -142,9 +145,11 @@ class ShoppingTwo
         }
         else
         {
+            char.TryParse(userFoodSelection, out char charFoodSelection);
+
             foreach (Product food in shoppingMenu)
             {
-                if (food.name.StartsWith(userFoodSelection))
+                if (food.name.StartsWith(charFoodSelection))
                 {
                     return food;
                 }
@@ -166,7 +171,7 @@ class ShoppingTwo
         }
     }
 
-    public static bool ValidateFoodInput(List<Product> shoppingMenu, char userFoodSelection, string userAmountSelection)
+    public static bool ValidateFoodInput(List<Product> shoppingMenu, string userFoodSelection)
     {
         if (int.TryParse(userFoodSelection.ToString(), out int intFoodSelection))
         {
@@ -181,37 +186,43 @@ class ShoppingTwo
         }
         else
         {
-            foreach (Product food in shoppingMenu)
+            if(char.TryParse(userFoodSelection, out char charFoodSelection))
             {
-                if (food.name.StartsWith(userFoodSelection))
+                foreach (Product food in shoppingMenu)
                 {
-                    return true;
-                }
-                else
-                {
-                    
+                    if (food.name.StartsWith(userFoodSelection))
+                    {
+                        return true;
+                    }                    
                 }
             }
+            else
+            {
+                return false;
+            }            
+           
             return false;
         }
 
     }
 
 
-    public static double GetLineTotal(List<Product> shoppingMenu, char userFoodSelection, string userAmountSelection)
+    public static double GetLineTotal(List<Product> shoppingMenu, string userFoodSelection, string userAmountSelection)
     {
         double lineTotal = 0;
 
         if (int.TryParse(userFoodSelection.ToString(), out int intFoodSelection))
         {
-            lineTotal = (shoppingMenu[userFoodSelection].price * int.Parse(userAmountSelection));
+            lineTotal = (shoppingMenu[intFoodSelection].price * int.Parse(userAmountSelection));
             return lineTotal;
         }
         else
         {
+            char.TryParse(userFoodSelection, out char charFoodSelection);
+
             foreach (Product food in shoppingMenu)
             {
-                if (food.name.StartsWith(userFoodSelection))
+                if (food.name.StartsWith(charFoodSelection))
                 {
                     lineTotal = food.price * int.Parse(userAmountSelection);
                 }
@@ -250,19 +261,12 @@ class ShoppingTwo
 
     public static void UpdateMenu()
     {
-        bool keepGoing = true;
+        var addItems = AskUserToAddMenuItems();
+        bool keepGoing;
+        
         do
-        {
-            Console.WriteLine("Would you like to add an item to our menu (y/n)?");
-            string userChoice = Console.ReadLine();
-            Console.WriteLine();
-
-            if (userChoice.Equals("n", StringComparison.OrdinalIgnoreCase))
-            {
-                Console.WriteLine("Goodbye!");
-                break;
-            }
-            else
+        {            
+            if (addItems)
             {
                 Console.WriteLine("Please enter an item");
                 string name = Console.ReadLine();
@@ -279,7 +283,7 @@ class ShoppingTwo
                 do
                 {
                     Console.WriteLine("Please enter a price");
-                     price = Console.ReadLine();
+                    price = Console.ReadLine();
 
                     bool checkDub = Double.TryParse(price, out double doublePrice);
 
@@ -300,19 +304,43 @@ class ShoppingTwo
                     }
 
                 } while (true);
-              
+
+            }            
+            else
+            {
+                Console.WriteLine("Goodbye!"); ;
+                break;
             }
         } while (keepGoing);
+        Console.WriteLine("Thank you, goodbye");
     }
 
-    public static void ValidatePrice(string price)
+
+    public static bool AskUserToAddMenuItems()
     {
-        bool checkPrice = Double.TryParse(price, out double doublePrice);
-
-        if (!checkPrice)
+        bool keepGoing;
+        do
         {
+            Console.WriteLine("Would you like to add an item to our menu (y/n)?");
+            string userChoice = Console.ReadLine();
+            Console.WriteLine();
 
-        }
-                
+            if (userChoice.Equals("n", StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine("Goodbye!");
+                return false;
+            }
+            else if (userChoice.Equals("y", StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("That is not a valid entry, please try again");
+                keepGoing = true;
+            }
+        } while (keepGoing);
+        return false;
+
     }
 }
