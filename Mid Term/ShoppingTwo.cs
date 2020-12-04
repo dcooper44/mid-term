@@ -1,4 +1,4 @@
-﻿using Mid_Term;
+using Mid_Term;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,6 +22,7 @@ class ShoppingTwo
             {
                 Console.WriteLine();
                 TextFile.OutputTxtFile();
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("\nPlease select the product you wish to buy by typing in the position in which the product is in the list (1,2,3,4.. etc) or by typing in the first letter of the item name");
                 var userFoodSelection = Console.ReadLine();
                 
@@ -67,7 +68,9 @@ class ShoppingTwo
         var userPaymentType = CheckoutCartForUser(userCheckoutList, grandTotal);
 
 
+
         
+
 
     }
     
@@ -104,7 +107,10 @@ class ShoppingTwo
         Console.WriteLine($"Your change Is ${changeTotal}");
     }
 
+
     public static void GenerateReceiptForUser(Dictionary<Product, double> userCheckoutList, double subTotal, string userCardNumber, string userExpirationDate)
+
+    
     {
         
 
@@ -115,10 +121,14 @@ class ShoppingTwo
         }
         var taxTotal = Math.Round(taxRate * subTotal, 2);
         var grandTotal = Math.Round(taxTotal + subTotal, 2);
+        double change;
+
+        Console.ForegroundColor = ConsoleColor.Cyan;
         Console.WriteLine($"\nYour sub total is ${subTotal}");
         Console.WriteLine($"Your tax total is ${taxTotal}");
         Console.WriteLine($"Your grand total is ${grandTotal}");
         Console.WriteLine($"Paid with card {userCardNumber}");
+
     }
 
 
@@ -327,7 +337,10 @@ class ShoppingTwo
         {            
             if (addItems)
             {
-                Console.WriteLine("Please enter an item");
+                Console.WriteLine();
+                TextFile.OutputTxtFile();
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("\nPlease enter an item");
                 string name = Console.ReadLine();
                 Console.WriteLine();
                 Console.WriteLine("Please enter a category");
@@ -356,6 +369,7 @@ class ShoppingTwo
                         Console.WriteLine();
                         Console.WriteLine("NEW LIST: ");
                         TextFile.WriteToTxt(name, category, description, doublePrice);
+                        Console.ForegroundColor = ConsoleColor.White;
                         Console.WriteLine();
 
                         keepGoing = AskUserToContinueAddingProducts();
