@@ -84,6 +84,7 @@ class ShoppingTwo
         }
         var taxTotal = Math.Round(taxRate * subTotal, 2);
         var grandTotal = Math.Round(taxTotal + subTotal, 2);
+        Console.ForegroundColor = ConsoleColor.Cyan;
         Console.WriteLine($"\nYour sub total is ${subTotal}");
         Console.WriteLine($"Your tax total is ${taxTotal}");
         Console.WriteLine($"Your grand total is ${grandTotal}");        
@@ -100,19 +101,21 @@ class ShoppingTwo
         }
         var taxTotal = Math.Round(taxRate * subTotal, 2);
         var grandTotal = Math.Round(taxTotal + subTotal, 2);
-        var changeTotal = Math.Round(grandTotal - doubleCash);
+        var changeTotal = Math.Round(doubleCash - grandTotal, 2);
+        Console.ForegroundColor = ConsoleColor.Cyan;
         Console.WriteLine($"\nYour sub total is ${subTotal}");
         Console.WriteLine($"Your tax total is ${taxTotal}");
         Console.WriteLine($"Your grand total is ${grandTotal}");
-        Console.WriteLine($"Your change Is ${changeTotal}");
+        if(changeTotal > 0)
+        {
+           Console.WriteLine($"Your change Is ${changeTotal}");
+        }
+       
     }
 
 
-    public static void GenerateReceiptForUser(Dictionary<Product, double> userCheckoutList, double subTotal, string userCardNumber, string userExpirationDate)
-
-    
-    {
-        
+    public static void GenerateReceiptForUser(Dictionary<Product, double> userCheckoutList, double subTotal, string userCardNumber, string userExpirationDate)    
+    {       
 
         var taxRate = 0.06;
         foreach (var keyValuePair in userCheckoutList)
@@ -120,8 +123,7 @@ class ShoppingTwo
             Console.WriteLine($"{keyValuePair.Key.name}-----${keyValuePair.Value}");
         }
         var taxTotal = Math.Round(taxRate * subTotal, 2);
-        var grandTotal = Math.Round(taxTotal + subTotal, 2);
-        double change;
+        var grandTotal = Math.Round(taxTotal + subTotal, 2);        
 
         Console.ForegroundColor = ConsoleColor.Cyan;
         Console.WriteLine($"\nYour sub total is ${subTotal}");
@@ -136,7 +138,7 @@ class ShoppingTwo
     public static string CheckoutCartForUser(Dictionary<Product, double> userCheckoutList, double grandTotal)
     {
         bool keepLooping = true;
-        bool isCashCorrect = false;
+        bool isPaymentCorrect = false;
         string userInput;
         do
         {
@@ -150,8 +152,8 @@ class ShoppingTwo
                     keepLooping = false;
                     Console.WriteLine("\nPlease Enter the Amount of Cash you will be paying with");
                     var userCash = Console.ReadLine();
-                    isCashCorrect = ValidateCashEntered(userCash, grandTotal);
-                    if (isCashCorrect)
+                    isPaymentCorrect = ValidatePaymentEntered(userCash, grandTotal);
+                    if (!isPaymentCorrect)
                     {
                         GenerateReceiptForUser(userCheckoutList, grandTotal, userCash);
                     }
@@ -162,12 +164,18 @@ class ShoppingTwo
                     keepLooping = false;
                     Console.WriteLine("\nPlease Enter the Credit Card Number:");
                     var userCardNumber = Console.ReadLine();
-                    Console.WriteLine("\nPlease Enter the Expiration Date of your card");
+                    Console.WriteLine("\nPlease Enter the Expiration Date of your card (MMYY)");
                     var userExpirationDate = Console.ReadLine();
                     Console.WriteLine("\nPlease Enter the CW of your credit card");
                     var userCW = Console.ReadLine();
+                    isPaymentCorrect = ValidatePaymentEntered(userCardNumber);
 
-                    GenerateReceiptForUser(userCheckoutList, grandTotal, userCardNumber, userExpirationDate);
+                    if (!isPaymentCorrect)
+                    {
+                        GenerateReceiptForUser(userCheckoutList, grandTotal, userCardNumber, userExpirationDate);
+                    }
+
+                    
 
 
                 }
@@ -176,9 +184,13 @@ class ShoppingTwo
                     keepLooping = false;
                     Console.WriteLine("\nPlease Enter the Check Number");
                     var userCheckNumber = Console.ReadLine();
-                    
+                    isPaymentCorrect = ValidatePaymentEntered(userCheckNumber);
 
-                    GenerateReceiptForUser(userCheckoutList, grandTotal);
+                    if (!isPaymentCorrect)
+                    {
+                        GenerateReceiptForUser(userCheckoutList, grandTotal);
+                    }
+                    
 
                 }
                 else
@@ -188,14 +200,27 @@ class ShoppingTwo
 
                 }
             } while (keepLooping);
-        } while (isCashCorrect);
+        } while (isPaymentCorrect);
         return userInput;
 
     }
 
-    public static bool ValidateCashEntered(string userCash, double grandTotal)
+    public static bool ValidatePaymentEntered(string userCash, double grandTotal)
     {
         if (double.TryParse(userCash, out double userCashDouble) && (userCashDouble >= grandTotal))
+        {
+            return false;
+        }
+        else
+        {
+            Console.WriteLine("\nThis Does Not Work, Please Try Again");
+            return true;
+        }
+    }
+
+    public static bool ValidatePaymentEntered(string paymentNumber)
+    {
+        if(int.TryParse(paymentNumber, out int intCheckNumber))
         {
             return false;
         }

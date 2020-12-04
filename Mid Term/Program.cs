@@ -13,7 +13,8 @@ namespace Mid_Term
         static void Main(string[] args)
         {
 
-            //ShoppingTwo.GetItemFromUser(TextFile.ReadFromTxt(@"productlist.txt"));
+            ShoppingTwo.GetItemFromUser(TextFile.ReadFromTxt(@"productlist.txt"));
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine();
             ShoppingTwo.UpdateMenu();
             
