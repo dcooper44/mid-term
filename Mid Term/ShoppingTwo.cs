@@ -1,4 +1,4 @@
-﻿using Mid_Term;
+using Mid_Term;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,7 +14,7 @@ class ShoppingTwo
         bool invalidInput;
         bool continueAddingProducts;
         double grandTotal = 0;
-        Dictionary<Product, double> userCheckoutList = new Dictionary<Product, double>(); //keep track of quantity instead of line total on this dictionary
+        Dictionary<Product, double> userCheckoutList = new Dictionary<Product, double>(); 
         do
         {
             double lineTotal = 0;
@@ -68,23 +68,52 @@ class ShoppingTwo
         var userPaymentType = CheckoutCartForUser(userCheckoutList, grandTotal);
 
 
-        //Call The Receipt Method using the same input variables as the checkout method.
-        GenerateReceiptForUser(userCheckoutList, grandTotal);
-        Console.ForegroundColor = ConsoleColor.White;
-    }
 
-    public static double GenerateLineTotal(Product food, int itemQuantity)
-    {
-        double lineTotal;
+        
 
-        lineTotal = food.price * itemQuantity;
-
-        return lineTotal;
 
     }
+    
 
-    public static void GenerateReceiptForUser(Dictionary<Product, double> userCheckoutList, double subTotal) //need parameter for cash payment
+    public static void GenerateReceiptForUser(Dictionary<Product, double> userCheckoutList, double subTotal)
     {
+        var taxRate = 0.06;
+        foreach (var keyValuePair in userCheckoutList)
+        {
+            Console.WriteLine($"{keyValuePair.Key.name}-----${keyValuePair.Value}");
+        }
+        var taxTotal = Math.Round(taxRate * subTotal, 2);
+        var grandTotal = Math.Round(taxTotal + subTotal, 2);
+        Console.WriteLine($"\nYour sub total is ${subTotal}");
+        Console.WriteLine($"Your tax total is ${taxTotal}");
+        Console.WriteLine($"Your grand total is ${grandTotal}");        
+    }
+
+    public static void GenerateReceiptForUser(Dictionary<Product, double> userCheckoutList, double subTotal, string cashPaid)
+    {
+        var doubleCash = double.Parse(cashPaid);
+
+        var taxRate = 0.06;
+        foreach (var keyValuePair in userCheckoutList)
+        {
+            Console.WriteLine($"{keyValuePair.Key.name}-----${keyValuePair.Value}");
+        }
+        var taxTotal = Math.Round(taxRate * subTotal, 2);
+        var grandTotal = Math.Round(taxTotal + subTotal, 2);
+        var changeTotal = Math.Round(grandTotal - doubleCash);
+        Console.WriteLine($"\nYour sub total is ${subTotal}");
+        Console.WriteLine($"Your tax total is ${taxTotal}");
+        Console.WriteLine($"Your grand total is ${grandTotal}");
+        Console.WriteLine($"Your change Is ${changeTotal}");
+    }
+
+
+    public static void GenerateReceiptForUser(Dictionary<Product, double> userCheckoutList, double subTotal, string userCardNumber, string userExpirationDate)
+
+    
+    {
+        
+
         var taxRate = 0.06;
         foreach (var keyValuePair in userCheckoutList)
         {
@@ -98,12 +127,11 @@ class ShoppingTwo
         Console.WriteLine($"\nYour sub total is ${subTotal}");
         Console.WriteLine($"Your tax total is ${taxTotal}");
         Console.WriteLine($"Your grand total is ${grandTotal}");
-        
-        //if(userPayment!=0)
-        //{
-        //    //Console.WriteLine($"Your change is ${}");
-        //}
+        Console.WriteLine($"Paid with card {userCardNumber}");
+
     }
+
+
 
     public static string CheckoutCartForUser(Dictionary<Product, double> userCheckoutList, double grandTotal)
     {
@@ -123,6 +151,10 @@ class ShoppingTwo
                     Console.WriteLine("\nPlease Enter the Amount of Cash you will be paying with");
                     var userCash = Console.ReadLine();
                     isCashCorrect = ValidateCashEntered(userCash, grandTotal);
+                    if (isCashCorrect)
+                    {
+                        GenerateReceiptForUser(userCheckoutList, grandTotal, userCash);
+                    }
 
                 }
                 else if (userInput.Equals("credit", StringComparison.OrdinalIgnoreCase))
@@ -135,6 +167,8 @@ class ShoppingTwo
                     Console.WriteLine("\nPlease Enter the CW of your credit card");
                     var userCW = Console.ReadLine();
 
+                    GenerateReceiptForUser(userCheckoutList, grandTotal, userCardNumber, userExpirationDate);
+
 
                 }
                 else if (userInput.Equals("check", StringComparison.OrdinalIgnoreCase))
@@ -142,6 +176,9 @@ class ShoppingTwo
                     keepLooping = false;
                     Console.WriteLine("\nPlease Enter the Check Number");
                     var userCheckNumber = Console.ReadLine();
+                    
+
+                    GenerateReceiptForUser(userCheckoutList, grandTotal);
 
                 }
                 else
